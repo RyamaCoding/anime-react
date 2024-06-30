@@ -15,9 +15,9 @@ const Home = () => {
     const fetchAnime = async (query) => {
       try {
         const { data } = await axios.get(`https://api.jikan.moe/v4/anime?q=${query}`);
-        setCards(data);
-        console.log(data);
-        navigate('/posts', { state: { cards: data } });
+        setCards(data.data);
+        console.log(data.data);
+        navigate('/posts', { state: { cards: data.data } });
       } catch (error) {
         console.error(error);
       }

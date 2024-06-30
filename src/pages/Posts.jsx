@@ -4,22 +4,23 @@ import Image from "../assets/revenge-girl-nightime.jpg";
 import Logo from "../assets/rc_logo_black.png";
 import Search from "../assets/magnifying-glass-solid.svg";
 import Spinner from "../assets/spinner-solid.svg";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Posts = () => {
+    const location = useLocation();
     const [cards, setCards] = useState([])
     const [search, setSearch] = useState('')
   
   
     async function fetchAnime(query) {
             const { data } = await axios.get(`https://api.jikan.moe/v4/anime?q=${query}`);
-            setCards(data.results);
-            console.log(data);
+            setCards(data.data);
+            console.log(data.data);
         } 
 
         useEffect(() => {
-            fetchAnime("naruto");
+            fetchAnime("");
         }, []);
 
     const handleSearch = (e) => {
@@ -68,7 +69,7 @@ return (
                         </li>
                     </ul>
 
-                    <button className="btn__menu">
+                    {/* <button className="btn__menu">
                         <i className="fas fa-bars white-bars"></i>
                     </button>
                     <div className="menu__backdrop--anime">
@@ -95,7 +96,7 @@ return (
                                 </a>
                             </li>
                         </ul>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="nav__description">
@@ -133,15 +134,15 @@ return (
                                     className="card__img"
                                 />
                                 <div className="card__content">
-                                    <h2 className="card__title">{card.title}</h2>
+                                    <h2 className="card__title">{card.title ? card.title : "N/A"}</h2>
                                     <p className="card__para">
-                                        <b>Year:</b> {card.year}
+                                        <b>Year:</b> {card.year ? card.year : "N/A"}
                                     </p>
                                     <p className="card__para">
-                                        <b>Episodes:</b> {card.episodes}
+                                        <b>Episodes:</b> {card.episodes ? card.episodes : "N/A"}
                                     </p>
                                     <p className="card__para">
-                                        <b>Rank:</b> {card.rank}
+                                        <b>Rank:</b> {card.rank ? card.rank : "N/A"}
                                     </p>
                                 </div>
                             </div>
