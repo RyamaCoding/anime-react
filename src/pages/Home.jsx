@@ -11,24 +11,23 @@ const Home = () => {
   const [cards, setCards] = useState([])
   const [search, setSearch] = useState('')
 
-
+    let navigate = useNavigate()
+    
     const fetchAnime = async (query) => {
       try {
         const { data } = await axios.get(`https://api.jikan.moe/v4/anime?q=${query}`);
         setCards(data.data);
         console.log(data.data);
-        navigate('/posts', { state: { cards: data.data } });
+        navigate(`/posts?search=${search}`);
       } catch (error) {
         console.error(error);
       }
     }
+    
     const handleSearch = (e) => {
       e.preventDefault();
       fetchAnime(search);
     }
-    
-    
-    let navigate = useNavigate()
     
     return (
       <div>

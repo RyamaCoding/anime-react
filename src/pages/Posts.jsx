@@ -11,7 +11,10 @@ const Posts = () => {
     const location = useLocation();
     const [cards, setCards] = useState([])
     const [search, setSearch] = useState('')
-  
+
+    const getQueryParameter = (param) => {
+        return new URLSearchParams(location.search).get(param);
+    }
   
     async function fetchAnime(query) {
             const { data } = await axios.get(`https://api.jikan.moe/v4/anime?q=${query}`);
@@ -20,8 +23,10 @@ const Posts = () => {
         } 
 
         useEffect(() => {
-            fetchAnime("");
-        }, []);
+            const initialQuery = getQueryParameter('search') || '';
+            setSearch(initialQuery);
+            fetchAnime(initialQuery);
+        }, [location.search]);
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -126,13 +131,15 @@ return (
             <div className="anime__row">
                 <div className="card__wrapper">
                     {cards && cards.length > 0 ? (
-                        cards.map((card) => (
-                            <div className="card" key={card.mal_id}>
-                                <img
-                                    src={card.images.jpg.image_url}
-                                    alt="anime-image"
-                                    className="card__img"
-                                />
+                        cards.map((card, index) => (
+                            <div className="card" key={`${card.mal_id}-${index}`}>
+                                <a href={card.url} target="_blank">
+                                    <img
+                                        src={card.images.jpg.image_url}
+                                        alt="anime-image"
+                                        className="card__img"
+                                    />
+                                </a>
                                 <div className="card__content">
                                     <h2 className="card__title">{card.title ? card.title : "N/A"}</h2>
                                     <p className="card__para">
