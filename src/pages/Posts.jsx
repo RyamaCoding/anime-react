@@ -74,7 +74,7 @@ return (
                         </li>
                     </ul>
 
-                    {/* <button className="btn__menu">
+                    <button className="btn__menu">
                         <i className="fas fa-bars white-bars"></i>
                     </button>
                     <div className="menu__backdrop--anime">
@@ -101,7 +101,7 @@ return (
                                 </a>
                             </li>
                         </ul>
-                    </div> */}
+                    </div>
                 </div>
 
                 <div className="nav__description">
