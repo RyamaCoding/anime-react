@@ -6,31 +6,43 @@ import Search from '../assets/magnifying-glass-solid.svg'
 import Spinner from '../assets/spinner-solid.svg'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 
 const Home = () => {
   const [cards, setCards] = useState([])
   const [search, setSearch] = useState('')
+  const [menuOpen, setMenuOpen] = useState(false)
 
-    let navigate = useNavigate()
-    
-    const fetchAnime = async (query) => {
-      try {
-        const { data } = await axios.get(`https://api.jikan.moe/v4/anime?q=${query}`);
-        setCards(data.data);
-        console.log(data.data);
-        navigate(`/posts?search=${search}`);
-      } catch (error) {
-        console.error(error);
-      }
+  let navigate = useNavigate()
+
+  const fetchAnime = async (query) => {
+    try {
+      const { data } = await axios.get(`https://api.jikan.moe/v4/anime?q=${query}`);
+      setCards(data.data);
+      console.log(data.data);
+      navigate(`/posts?search=${search}`);
+    } catch (error) {
+      console.error(error);
     }
-    
-    const handleSearch = (e) => {
-      e.preventDefault();
-      fetchAnime(search);
-    }
-    
-    return (
-      <div>
+  }
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    fetchAnime(search);
+  }
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen)
+  }
+
+  const handleHomeClick = () => {
+    toggleMenu();
+    navigate('/')
+  }
+
+  return (
+    <div>
       <nav className="nav__bar">
         <div className="content-wrapper">
           <a href="https://github.com/RyamaCoding">
@@ -48,21 +60,21 @@ const Home = () => {
             </li>
           </ul>
 
-          <button className="btn__menu" >
+          <button className="btn__menu" onClick={toggleMenu}>
             <i className="fas fa-bars"></i>
           </button>
-          <div className="menu__backdrop">
-            <button className="btn__menu btn__menu--close" >
-              <i className="fas fa-times"></i>
-            </button>
-            <ul className="menu__links">
-              <li className="menu__list"><a href="#" className="menu__link nav__text-effect3">Home</a></li>
-              <li className="menu__list"><a href="/posts" className="menu__link nav__text-effect3">Find your anime</a></li>
-              <li className="menu__list"><a href="#" className="menu__link no-cursor nav__text-effect3">Contact</a></li>
-            </ul>
-          </div>
         </div>
       </nav>
+      <div className={`menu__backdrop ${menuOpen ? 'menu--open' : ''}`}>
+        <ul className="menu__links">
+          <li className="menu__list"><a href="#" className="menu__link nav__text-effect3" onClick={handleHomeClick}>Home</a></li>
+          <li className="menu__list"><a href="/posts" className="menu__link nav__text-effect3">Find your anime</a></li>
+          <li className="menu__list"><a href="#" className="menu__link no-cursor nav__text-effect3">Contact</a></li>
+        </ul>
+        <button className="btn__menu--close" onClick={toggleMenu}>
+          <i className="fas fa-times"></i>
+        </button>
+      </div>
 
       <section id="landing-page">
         <div className="container">
@@ -82,6 +94,9 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Add your modal component here */}
+      {/* Example: <Modal onClose={closeModal} /> */}
     </div>
   )
 }
